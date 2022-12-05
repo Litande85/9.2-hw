@@ -20,7 +20,7 @@ wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix
 dpkg -i zabbix-release_6.0-4+debian11_all.deb
 apt update
 ```
-
+[img1](https://github.com/Litande85/9.2-hw/blob/main/img1)
 
 ---
 
