@@ -78,6 +78,7 @@ sudo systemctl enable zabbix-agent
 ```
 
 То же самое сразу на 2 хоста через ansible:
+ansible-playbook playbook2.yml
 
 ```yaml
 - name: Play1 Add repo
