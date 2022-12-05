@@ -65,6 +65,67 @@ http://<ip_сервера>/zabbix
 
 ### *Ответ к Заданию 2*
 
+```bash
+# Добавьте репозиторий Zabbix
+wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-4%2Bdebian11_all.deb
+dpkg -i zabbix-release_6.0-4+debian11_all.deb
+apt update
+# Установите Zabbix Server и компоненты
+sudo apt install zabbix-agent -y
+# Запустите Zabbix Agent
+sudo systemctl restart zabbix-agent
+sudo systemctl enable zabbix-agent
+```
+
+То же самое сразу на 2 хоста через ansible:
+
+```yaml
+- name: Play1 Add repo
+  hosts: all
+  become: yes
+  tasks:
+
+  - name: Download repo Zabbix
+    shell: wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-4%2Bdebian11_all.deb
+  
+  - name: install repo
+    shell: dpkg -i zabbix-release_6.0-4+debian11_all.deb
+
+  - name: Update apt packages
+    become: true
+    apt:
+      update_cache: yes
+
+- name: Play2 Install Zabbix-agent
+  hosts: all
+  become: yes
+  tasks:
+
+  - name: install zabbix-agent 
+    apt:
+      name:
+        - zabbix-agent
+      state: present
+  
+  - name: Start enable zabbix-agent 
+    systemd:
+      name: zabbix-agent
+      state: started
+      enabled: yes
+
+
+  - name: zabbix-agent status
+    shell:  service zabbix-agent status
+    register: zabbixtxt
+
+
+  
+  - name: "Print the file content to a console"
+    debug:
+      msg: "{{ zabbixtxt.stdout }}"
+      
+```
+
 ---
 ## Дополнительное задание (со звездочкой*)
 
