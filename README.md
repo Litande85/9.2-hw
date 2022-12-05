@@ -46,6 +46,11 @@ sed -i 's/# DBPassword=/DBPassword=123456789/g' /etc/zabbix/zabbix_server.conf
 sudo systemctl restart zabbix-server apache2 
 sudo systemctl enable zabbix-server apache2 
 ```
+Настройка web-сервера по адресу 
+http://<ip_сервера>/zabbix
+
+![img3](https://github.com/Litande85/9.2-hw/blob/main/img3.png)
+
 
 ---
 
