@@ -20,7 +20,32 @@ wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix
 dpkg -i zabbix-release_6.0-4+debian11_all.deb
 apt update
 ```
-[img1](https://github.com/Litande85/9.2-hw/blob/main/img1)
+
+![img1](https://github.com/Litande85/9.2-hw/blob/main/img1)
+
+```bash
+# Установка Zabbix Server
+sudo apt install zabbix-server-pgsql zabbix-frontend-php php7.4-pgsql zabbix-apache-conf zabbix-sql-scripts nano -y 
+
+# Создание пользователя с помощью psql из под root
+sudo su
+su - postgres -c 'psql --command "CREATE USER zabbix WITH PASSWORD '\'123456789\'';"'
+su - postgres -c 'psql --command "CREATE DATABASE zabbix OWNER zabbix;"'
+
+# Импорт скачанной схемы
+zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
+
+# Установка пароля в DBPassword
+sed -i 's/# DBPassword=/DBPassword=123456789/g' /etc/zabbix/zabbix_server.conf
+```
+
+![img2](https://github.com/Litande85/9.2-hw/blob/main/img2)
+
+```bash
+# Запуск Zabbix Server и web-сервер
+sudo systemctl restart zabbix-server apache2 
+sudo systemctl enable zabbix-server apache2 
+```
 
 ---
 
