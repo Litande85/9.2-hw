@@ -233,6 +233,8 @@ ansible-playbook playbook2.yml
     debug:
       msg: "{{ zabbixtxt.stdout }}"
       
+  - name: rm package file
+    shell: rm zabbix-release_6.0-4+debian11_all.deb*
 ```
 
 ---
