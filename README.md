@@ -28,7 +28,6 @@ apt update
 sudo apt install zabbix-server-pgsql zabbix-frontend-php php7.4-pgsql zabbix-apache-conf zabbix-sql-scripts nano -y 
 
 # Создание пользователя с помощью psql из под root
-sudo su
 su - postgres -c 'psql --command "CREATE USER zabbix WITH PASSWORD '\'123456789\'';"'
 su - postgres -c 'psql --command "CREATE DATABASE zabbix OWNER zabbix;"'
 
@@ -64,20 +63,129 @@ http://<ip_сервера>/zabbix
 *Приложите текст использованных команд в GitHub.*
 
 ### *Ответ к Заданию 2*
+Создание двух хостов с помощью terraform в yandex cloud.
+
+variables.tf
+
+```HCL
+variable "OAuthTocken" {
+  default = "....."
+}
+
+variable "vm_ips" {
+  type        = map(any)
+  description = "List of IPs used for the Vms"
+}
+
+variable "guest_name_prefix" {
+  default = "makhota-test"
+}
+```
+
+terraform.tfvars
+
+```HCL
+vm_ips = {
+  "0" = "10.128.0.10"
+  "1" = "10.128.0.11"
+  "2" = "10.128.0.12"
+}
+```
+
+meta.txt
+
+```yaml
+#cloud-config
+users:
+ - name: user
+   groups: sudo
+   shell: /bin/bash
+   sudo: ['ALL=(ALL) NOPASSWD:ALL']
+   ssh-authorized-keys:
+     - ssh-rsa  ..... user@makhotaev
+```
+main.tf
+
+```HCL
+// Create several similar vm
+
+// Configure the Yandex Cloud provider
+
+terraform {
+  required_providers {
+    yandex = {
+      source = "yandex-cloud/yandex"
+    }
+  }
+}
+
+provider "yandex" {
+  token     = var.OAuthTocken
+  cloud_id  = "b1gob4asoo1qa32tbt9b"
+  folder_id = "b1gob4asoo1qa32tbt9b"
+  zone      = "ru-central1-a"
+}
+
+
+  
+//создание vm
+
+resource "yandex_compute_instance" "vm" {
+  name = "${var.guest_name_prefix}-vm0${count.index + 1}"
+  count = 2    
+
+
+  resources {
+    cores     = 4
+    memory    = 4
+  
+  }
+
+  boot_disk {
+    initialize_params {
+      image_id = "fd8456n7d102l8p6ipgl" #Debian 11
+      type     = "network-ssd"
+      size     = "16"
+    }
+  }
+
+    network_interface {
+    subnet_id = "e9bf0qhr78eltofkhvbb"
+    nat       = true
+    ip_address     = lookup(var.vm_ips, count.index) #terraform.tfvars
+    }
+
+  
+  metadata = {
+    user-data = "${file("./meta.txt")}"
+  }
+}
+```
+
+Установка zabbix-agent
+
 
 ```bash
-# Добавьте репозиторий Zabbix
+# Добавление репозитория Zabbix
 wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-4%2Bdebian11_all.deb
 dpkg -i zabbix-release_6.0-4+debian11_all.deb
 apt update
-# Установите Zabbix Server и компоненты
+# Установка Zabbix Server и компонентов
 sudo apt install zabbix-agent -y
-# Запустите Zabbix Agent
+# Запуск Zabbix Agent
 sudo systemctl restart zabbix-agent
 sudo systemctl enable zabbix-agent
 ```
 
-То же самое сразу на 2 хоста через ansible:
+Либо то же самое сразу на 2 хоста через ansible:
+
+hosts
+
+```bash
+10.128.0.10 ansible_ssh_private_key_file=/home/user/.ssh/id_rsa ansible_user=user ansible_python_interpreter=/usr/bin/python3
+10.128.0.11 ansible_ssh_private_key_file=/home/user/.ssh/id_rsa ansible_user=user ansible_python_interpreter=/usr/bin/python3
+```
+
 ansible-playbook playbook2.yml
 
 ```yaml
@@ -108,10 +216,10 @@ ansible-playbook playbook2.yml
         - zabbix-agent
       state: present
   
-  - name: Start enable zabbix-agent 
+  - name: restart and enable zabbix-agent 
     systemd:
       name: zabbix-agent
-      state: started
+      state: restarted
       enabled: yes
 
 
