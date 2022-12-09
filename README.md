@@ -52,7 +52,7 @@ sudo systemctl enable zabbix-server apache2
 
 Или все то же самое с установкой zabbix-server через ansible
 
-ansible-playbook [playbook_install_server.yml](ansible/playbook_setip_server.yml) -b
+ansible-playbook [playbook_install_server.yml](ansible/playbook_install_server.yml) -b
 
 
 ```yaml
