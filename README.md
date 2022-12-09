@@ -354,7 +354,31 @@ ansible-playbook playbook_install_agents.yml -b
 
 ```bash
 # Меняем адрес сервера в zabbix_agentd.conf
-sed -i 's/Server=127.0.0.1/Server=192.168.0.138'/g' /etc/zabbix/zabbix_server.conf
+sed -i 's/Server=127.0.0.1/Server=10.128.0.102'/g' /etc/zabbix/zabbix_server.conf
+```
+
+Либо то же самое сразу на два хоста через ansible
+
+ansible-playbook playbook_setip_server.yml -b
+
+```yaml
+
+# Permission  zabbix-server connect to zabbix-agent
+- name: Play1 permission zabbix-server
+  hosts: zabbix-agents
+  become: yes
+  tasks:
+
+  - name: set ip zabbix-server
+    become: yes
+    shell: sed -i "s/Server=127.0.0.1/Server=10.128.0.102/g" /etc/zabbix/zabbix_agentd.conf
+
+
+  - name: retart and enable zabbix-agent 
+    systemd:
+      name: zabbix-agent
+      state: restarted
+      enabled: yes
 ```
 
 ---
