@@ -52,7 +52,7 @@ sudo systemctl enable zabbix-server apache2
 
 Или все то же самое с установкой zabbix-server через ansible
 
-ansible-playbook playbook_install_server.yml -b
+ansible-playbook [playbook_install_server.yml](ansible/playbook_setip_server.yml) -b
 
 
 ```yaml
@@ -157,7 +157,7 @@ http://<ip_сервера>/zabbix
 ### *Ответ к Заданию 2*
 Создание двух хостов с помощью terraform в yandex cloud.
 
-variables.tf
+[variables.tf](terraform/variables.tf)
 
 ```HCL
 variable "OAuthTocken" {
@@ -174,7 +174,7 @@ variable "guest_name_prefix" {
 }
 ```
 
-terraform.tfvars
+[terraform.tfvars](terraform/terraform.tfvars)
 
 ```HCL
 vm_ips = {
@@ -184,7 +184,7 @@ vm_ips = {
 }
 ```
 
-meta.txt
+[meta.txt](terraform/meta.txt)
 
 ```yaml
 #cloud-config
@@ -196,7 +196,7 @@ users:
    ssh-authorized-keys:
      - ssh-rsa  ..... user@makhotaev
 ```
-main.tf
+[main.tf](terraform/main.tf)
 
 ```HCL
 terraform {
@@ -281,7 +281,7 @@ sudo systemctl enable zabbix-agent
 
 Либо то же самое сразу на 2 хоста через ansible:
 
-hosts
+[hosts](ansible/hosts)
 
 ```bash
 [zabbix-agents]
@@ -293,7 +293,7 @@ hosts
 
 ```
 
-ansible-playbook playbook_install_agents.yml -b
+ansible-playbook [playbook_install_agents.yml](ansible/playbook_install_agents.yml) -b
 
 ```yaml
 # Install zabbix-agent
@@ -358,7 +358,7 @@ sed -i 's/Server=127.0.0.1/Server=10.128.0.102'/g' /etc/zabbix/zabbix_server.con
 
 Либо то же самое сразу на два хоста через ansible
 
-ansible-playbook playbook_setip_server.yml -b
+ansible-playbook [playbook_setip_server.yml](ansible/playbook_setip_server.yml) -b
 
 ```yaml
 
