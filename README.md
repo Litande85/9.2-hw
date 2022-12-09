@@ -50,6 +50,94 @@ sudo nano /etc/zabbix/zabbix_server.conf
 sudo systemctl restart zabbix-server apache2 
 sudo systemctl enable zabbix-server apache2 
 ```
+
+Или все то же самое с установкой zabbix-server через ansible
+
+ansible-playbook playbook_install_server.yml -b
+
+
+```yaml
+# Install zabbix-server
+- name: Play1 Add repo
+  hosts: zabbix-server
+  become: yes
+  tasks:
+
+  - name: Download repo Zabbix
+    shell: wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-4%2Bdebian11_all.deb
+  
+  - name: install repo
+    shell: dpkg -i zabbix-release_6.0-4+debian11_all.deb
+
+  - name: Update apt packages
+    become: true
+    apt:
+      update_cache: yes
+
+- name: Play2 Install Zabbix-server
+  hosts: zabbix-server
+  become: yes
+  tasks:
+
+  - name: install postgresql
+    apt:
+      name:
+        - postgresql
+      state: present
+  
+  - name: install zabbix-server 
+    apt:
+      name:
+        - zabbix-server-pgsql
+        - zabbix-frontend-php 
+        - php7.4-pgsql 
+        - zabbix-apache-conf 
+        - zabbix-sql-scripts 
+        - nano
+      state: present
+  
+  
+  - name: make user psql
+    shell: su - postgres -c 'psql --command "CREATE USER zabbix WITH PASSWORD '\'123456789\'';"' 
+    ignore_errors: true
+
+  - name: make user psql2
+    shell: su - postgres -c 'psql --command "CREATE DATABASE zabbix OWNER zabbix;"'
+    ignore_errors: true
+    
+  - name: extract archive
+    shell: zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
+
+    
+  - name: set passwd DB
+    shell:  sed -i 's/# DBPassword=/DBPassword=123456789/g' /etc/zabbix/zabbix_server.conf
+
+  
+  - name: retart and enable zabbix-server
+    systemd:
+      name: zabbix-server
+      state: restarted
+      enabled: yes
+
+  - name: retart and enable apache2
+    systemd:
+      name: apache2
+      state: restarted
+      enabled: yes
+
+  - name: zabbix-server status
+    shell:  service zabbix-server status
+    register: zabbixtxt
+  
+  - name: "Print the file content to a console"
+    debug:
+      msg: "{{ zabbixtxt.stdout }}"
+ 
+  - name: rm package file
+    shell: rm zabbix-release_6.0-4+debian11_all.deb*
+ 
+ ```
+
 Настройка web-сервера по адресу 
 http://<ip_сервера>/zabbix
 
@@ -206,7 +294,7 @@ hosts
 
 ```
 
-ansible-playbook 
+ansible-playbook playbook_install_agents.yml -b
 
 ```yaml
 # Install zabbix-agent
