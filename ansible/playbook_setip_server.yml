@@ -1,0 +1,16 @@
+# Permission  zabbix-server connect to zabbix-agent
+- name: Play1 permission zabbix-server
+  hosts: zabbix-agents
+  become: yes
+  tasks:
+
+  - name: set ip zabbix-server
+    become: yes
+    shell: sed -i "s/Server=127.0.0.1/Server=10.128.0.102/g" /etc/zabbix/zabbix_agentd.conf
+
+
+  - name: retart and enable zabbix-agent 
+    systemd:
+      name: zabbix-agent
+      state: restarted
+      enabled: yes
