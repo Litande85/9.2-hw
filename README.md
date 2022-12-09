@@ -107,10 +107,6 @@ users:
 main.tf
 
 ```HCL
-// Create several similar vm
-
-// Configure the Yandex Cloud provider
-
 terraform {
   required_providers {
     yandex = {
@@ -128,10 +124,10 @@ provider "yandex" {
 
 
   
-//создание vm
+//create zabbix-agents
 
-resource "yandex_compute_instance" "vm" {
-  name = "${var.guest_name_prefix}-vm0${count.index + 1}"
+resource "yandex_compute_instance" "vm-agent" {
+  name = "${var.guest_name_prefix}-vm0${count.index + 1}" #variables.tf 
   count = 2    
 
 
@@ -159,6 +155,20 @@ resource "yandex_compute_instance" "vm" {
   metadata = {
     user-data = "${file("./meta.txt")}"
   }
+
+
+  provisioner "remote-exec" {
+    connection {
+      host = lookup(var.vm_ips, count.index) #terraform.tfvars
+      type        = "ssh"
+      private_key = "${file("~/.ssh/id_rsa")}"
+      port        = 22
+      user        = "user"
+      agent       = false
+      timeout     = "1m"
+    }
+    inline = ["sudo hostnamectl set-hostname ${var.guest_name_prefix}-vm0${count.index + 1}"]
+  }    
 }
 ```
 
