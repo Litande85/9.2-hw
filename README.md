@@ -347,6 +347,16 @@ ansible-playbook playbook_install_agents.yml -b
  
 ```
 
+Добавляем хосты в zabbix-server
+
+![img7](https://github.com/Litande85/9.2-hw/blob/main/img7.png)
+
+
+```bash
+# Меняем адрес сервера в zabbix_agentd.conf
+sed -i 's/Server=127.0.0.1/Server=192.168.0.138'/g' /etc/zabbix/zabbix_server.conf
+```
+
 ---
 ## Дополнительное задание (со звездочкой*)
 
