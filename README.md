@@ -20,8 +20,7 @@ wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix
 dpkg -i zabbix-release_6.0-4+debian11_all.deb
 apt update
 ```
-
-![img1](https://github.com/Litande85/9.2-hw/blob/main/img1)
+![add repo](img/img1)
 
 ```bash
 # Установка Zabbix Server
@@ -43,7 +42,7 @@ sed -i 's/# DBPassword=/DBPassword=123456789/g' /etc/zabbix/zabbix_server.conf
 sudo nano /etc/zabbix/zabbix_server.conf 
 ```
 
-![img6](https://github.com/Litande85/9.2-hw/blob/main/img6)
+![check config](img/img6)
 
 ```bash
 # Запуск Zabbix Server и web-сервер
@@ -141,7 +140,7 @@ ansible-playbook playbook_install_server.yml -b
 Настройка web-сервера по адресу 
 http://<ip_сервера>/zabbix
 
-![img5](https://github.com/Litande85/9.2-hw/blob/main/img5.png)
+![web](img/img5.png)
 
 
 ---
@@ -349,7 +348,7 @@ ansible-playbook playbook_install_agents.yml -b
 
 Добавляем хосты в zabbix-server
 
-![img7](https://github.com/Litande85/9.2-hw/blob/main/img7.png)
+![add host](img/img7.png)
 
 
 ```bash
@@ -380,6 +379,27 @@ ansible-playbook playbook_setip_server.yml -b
       state: restarted
       enabled: yes
 ```
+
+Добавила template
+
+![temlate](img/img8.png)
+
+В логах пропали ошибки соединения
+
+![log](img/img14.png)
+
+Хосты позеленели
+
+![list hosts](img/img9.png)
+
+Подгрузились данные Latest data 
+
+![vm1](img/img10.png)
+
+![vm2](img/img11.png)
+
+![server](img/img12.png)
+
 
 ---
 ## Дополнительное задание (со звездочкой*)
