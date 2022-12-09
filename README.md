@@ -197,13 +197,19 @@ sudo systemctl enable zabbix-agent
 hosts
 
 ```bash
+[zabbix-agents]
 10.128.0.10 ansible_ssh_private_key_file=/home/user/.ssh/id_rsa ansible_user=user ansible_python_interpreter=/usr/bin/python3
 10.128.0.11 ansible_ssh_private_key_file=/home/user/.ssh/id_rsa ansible_user=user ansible_python_interpreter=/usr/bin/python3
+
+[zabbix-server]
+10.128.0.102 ansible_ssh_private_key_file=/home/user/.ssh/id_rsa ansible_user=user ansible_python_interpreter=/usr/bin/python3
+
 ```
 
-ansible-playbook playbook2.yml
+ansible-playbook 
 
 ```yaml
+# Install zabbix-agent
 - name: Play1 Add repo
   hosts: all
   become: yes
@@ -231,7 +237,7 @@ ansible-playbook playbook2.yml
         - zabbix-agent
       state: present
   
-  - name: restart and enable zabbix-agent 
+  - name: retart and enable zabbix-agent 
     systemd:
       name: zabbix-agent
       state: restarted
@@ -247,9 +253,10 @@ ansible-playbook playbook2.yml
   - name: "Print the file content to a console"
     debug:
       msg: "{{ zabbixtxt.stdout }}"
-      
+ 
   - name: rm package file
     shell: rm zabbix-release_6.0-4+debian11_all.deb*
+ 
 ```
 
 ---
