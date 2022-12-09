@@ -37,8 +37,13 @@ zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psq
 # Установка пароля в DBPassword
 sed -i 's/# DBPassword=/DBPassword=123456789/g' /etc/zabbix/zabbix_server.conf
 ```
+Проверка конфигурации
 
-![img2](https://github.com/Litande85/9.2-hw/blob/main/img2)
+```bash
+sudo nano /etc/zabbix/zabbix_server.conf 
+```
+
+![img6](https://github.com/Litande85/9.2-hw/blob/main/img6)
 
 ```bash
 # Запуск Zabbix Server и web-сервер
@@ -48,7 +53,7 @@ sudo systemctl enable zabbix-server apache2
 Настройка web-сервера по адресу 
 http://<ip_сервера>/zabbix
 
-![img3](https://github.com/Litande85/9.2-hw/blob/main/img3.png)
+![img5](https://github.com/Litande85/9.2-hw/blob/main/img5.png)
 
 
 ---
