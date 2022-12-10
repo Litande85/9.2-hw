@@ -474,12 +474,14 @@ Operations
 
 ![status](img/img22.png)
 
-Стандартный шаблон Latest Data подгружает только общий объем диска С и занятый объем
+Стандартный шаблон zabbix-server для windows подгружает только общий объем диска С и занятый объем
 
 ![standart template](img/img19.png)
 
-Поэтому [подгрузила с сайта www.mihanik.net](https://www.mihanik.net/monitoring-diskovogo-prostranstva-aktivnym-zabbix-agentom/?ysclid=lbi42xk55m364682283) [дополнительный шаблон](template%20zabbix/zbx_export_templates_Active_Computer_SystemDrive.xml)
+Поэтому [скачала с сайта www.mihanik.net](https://www.mihanik.net/monitoring-diskovogo-prostranstva-aktivnym-zabbix-agentom/?ysclid=lbi42xk55m364682283) [дополнительный шаблон](template%20zabbix/zbx_export_templates_Active_Computer_SystemDrive.xml) и импортировала его в zabbix-server, добавила к шаблонам хоста ``
 
 в итоге можно мониторить и свободное место на диске C:
 
-![additional template](img/img21.png)
+![additional temlate](img/img20.png)
+
+![my comp](img/img21.png)
