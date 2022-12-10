@@ -468,7 +468,7 @@ Operations
 ![operations](img/img17.png)
 
 
-**Обновить и перезапустить службу windows**
+**Обновить и перезапустить службу zabbix-agent в windows**
 
 ![restart](img/img18.png)
 
