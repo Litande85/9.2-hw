@@ -416,7 +416,7 @@ ansible-playbook [playbook_setip_server.yml](ansible/playbook_setip_server.yml) 
 
 [Скачать zabbix-agent для windows](https://cdn.zabbix.com/zabbix/binaries/stable/6.0/6.0.12/zabbix_agent-6.0.12-windows-i386.zip)
 
-Подготовка
+**Подготовка**
 
 Zabbix агент распространяется в виде zip архива. После того, как вы скачан архив,  нужно распаковать его. Выберите любую папку для хранения Zabbix агента и конфигурационного файла, например.
 
@@ -432,7 +432,7 @@ Hostname=Windows Makhota agent
 HostnameItem=system.hostname
 HostMetadataItem=system.uname
 ```
-Установка zabbix-agent на windows
+**Установка zabbix-agent на windows**
 
 Вызываем командную строку windows `ctrl + x` с правами администратора
 
@@ -443,7 +443,7 @@ C:\> c:\zabbix\zabbix_agentd.exe -c c:\zabbix\zabbix_agentd.conf -i
 ```
 ![install](img/img15.png)
 
-Добавляем авторегистрацию активного агента windows на web zabbix-server
+**Добавляем авторегистрацию** активного агента windows на web zabbix-server
 
 Configurations > actions > Autoregistration actions > Create action
 
@@ -466,9 +466,11 @@ Operations
 ![operations](img/img17.png)
 
 
-Обновить и перезапустить службу windows
+**Обновить и перезапустить службу windows**
 
 ![restart](img/img18.png)
+
+**Результат**
 
 Активный zabbix-agent имеет серый Unknown interface status - это нормально, поскольку в отличие от пассивного агента соединение инициирует активный zabbix-agent вместо  zabbix-server
 
