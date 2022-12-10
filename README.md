@@ -482,7 +482,7 @@ Operations
 
 ![standart template](img/img19.png)
 
-Поэтому [скачала с сайта www.mihanik.net](https://www.mihanik.net/monitoring-diskovogo-prostranstva-aktivnym-zabbix-agentom/?ysclid=lbi42xk55m364682283) [дополнительный шаблон](template%20zabbix/zbx_export_templates_Active_Computer_SystemDrive.xml) и импортировала его в zabbix-server, добавила к шаблонам хоста ``
+Поэтому [скачала с сайта www.mihanik.net](https://www.mihanik.net/monitoring-diskovogo-prostranstva-aktivnym-zabbix-agentom/?ysclid=lbi42xk55m364682283) [дополнительный шаблон](template%20zabbix/zbx_export_templates_Active_Computer_SystemDrive.xml) и импортировала его в zabbix-server, добавила к шаблонам хоста `Windows Makhota agent`
 
 в итоге можно мониторить и свободное место на диске C:
 
