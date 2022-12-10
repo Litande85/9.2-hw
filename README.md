@@ -413,3 +413,72 @@ ansible-playbook [playbook_setip_server.yml](ansible/playbook_setip_server.yml) 
 *Приложите скриншот раздела Latest Data, где видно свободное место на диске C:*
 
 ### *Ответ к Заданию 3*
+
+[Скачать zabbix-agent для windows](https://cdn.zabbix.com/zabbix/binaries/stable/6.0/6.0.12/zabbix_agent-6.0.12-windows-i386.zip)
+
+Подготовка
+Zabbix агент распространяется в виде zip архива. После того, как вы скачан архив,  нужно распаковать его. Выберите любую папку для хранения Zabbix агента и конфигурационного файла, например.
+
+```
+C:\zabbix
+```
+Скопировать файлы bin\zabbix_agentd.exe и conf\zabbix_agentd.conf в c:\zabbix.
+
+Отредактировать файл c:\zabbix\zabbix_agentd.conf для активного агента, так как мой хост находится за натом с серым адресом:
+
+```
+Hostname=Windows Makhota agent
+HostnameItem=system.hostname
+HostMetadataItem=system.uname
+```
+Установка zabbix-agent на windows
+
+Вызываем командную строку windows `ctrl + x' с правами администратора
+
+Используем следующую команду для установки Zabbix агента как службы Windows:
+
+```
+C:\> c:\zabbix\zabbix_agentd.exe -c c:\zabbix\zabbix_agentd.conf -i
+```
+![install](img/img15.png)
+
+Добавляем авторегистрацию активного агента windows на web zabbix-server
+
+Configurations > actions > Autoregistration actions > Create action
+
+```
+Name:
+  Авторегистрация Windows хостов
+
+Conditions
+  Type Host metadata 
+  Operator contains 
+  Value Windows
+
+Operations
+  Add host 
+  Link to templates: Windows by Zabbix agent active 
+  Enable host
+```
+
+![autoreg](img/img16.png)
+![operations](img/img17.png)
+
+
+Обновить и перезапустить службу windows
+
+![restart](img/img18.png)
+
+Активный zabbix-agent имеет серый Unknown interface status - это нормально, поскольку в отличие от пассивного агента соединение инициирует активный zabbix-agent вместо  zabbix-server
+
+![status](img/img22.png)
+
+Стандартный шаблон Latest Data подгружает только общий объем диска С и занятый объем
+
+![standart template](img/img19.png)
+
+Поэтому [подгрузила с сайта www.mihanik.net](https://www.mihanik.net/monitoring-diskovogo-prostranstva-aktivnym-zabbix-agentom/?ysclid=lbi42xk55m364682283) [дополнительный шаблон](template%20zabbix/zbx_export_templates_Active_Computer_SystemDrive.xml)
+
+в итоге можно мониторить и свободное место на диске C:
+
+![additional template](img/img21.png)
