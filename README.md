@@ -416,6 +416,8 @@ ansible-playbook [playbook_setip_server.yml](ansible/playbook_setip_server.yml) 
 
 [Скачать zabbix-agent для windows](https://cdn.zabbix.com/zabbix/binaries/stable/6.0/6.0.12/zabbix_agent-6.0.12-windows-i386.zip)
 
+Выбрать нужную версию [тут](https://www.zabbix.com/download_agents?version=6.0+LTS&release=6.0.12&os=Windows&os_version=Any&hardware=i386&encryption=No+encryption&packaging=Archive&show_legacy=0)
+
 **Подготовка**
 
 Zabbix агент распространяется в виде zip архива. После того, как вы скачан архив,  нужно распаковать его. Выберите любую папку для хранения Zabbix агента и конфигурационного файла, например.
