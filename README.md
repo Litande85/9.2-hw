@@ -489,3 +489,9 @@ Operations
 ![additional temlate](img/img20.png)
 
 ![my comp](img/img21.png)
+
+**Полезные ссылки**
+
+https://www.zabbix.com/documentation/6.0/en/manual/concepts/agent
+
+https://www.zabbix.com/documentation/5.0/ru/manual/discovery/auto_registration
